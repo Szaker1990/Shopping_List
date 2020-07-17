@@ -4,10 +4,11 @@ export const MainPage = () =>{
     const[product, setProduct] = useState({name:"",category: "",quantity: ""});
     const[categories , setCategories] = useState(["Pieczywo","Owoce","Warzywa","Nabiał","Kosmetyki"]);
     const[productName, setProductName] = useState("");
-    const[productQuantity, setProductQuantity] = useState(0);
+    const[productQuantity, setProductQuantity] = useState(1);
     const[kilos,setKilos] = useState(true);
     const[productCategory, setProductCategory] = useState(categories[0]);
     const[listOfProducts, setListOfProducts] = useState([]);
+    const[warnings,setWarnings] = useState([])
 
 
     const handleNameChange = (e) =>{
@@ -31,6 +32,8 @@ export const MainPage = () =>{
            quantity: kilos ? `${productQuantity} Kg`: `${productQuantity} sztuk`
 
         }
+
+
         setProduct(newProduct)
     }
     useEffect(()=>{
@@ -39,13 +42,21 @@ export const MainPage = () =>{
 
     const handleAddProduct = (e) =>{
         e.preventDefault()
-        setListOfProducts(prev => prev + product)
+        const newErrors = [];
+        if(product.name.length<1){newErrors.push("Nazwa Produktu musi zawierac wiecej niz 1 znak")}
+        setWarnings(newErrors)
+        if(newErrors.length>0)return false
+        setListOfProducts([...listOfProducts,product])
+        resetProduct()
 
     }
 
 
+    const resetProduct = () =>{
+        setProductName("")
+        setProductQuantity(1)
 
-
+    }
 
 
     return(
@@ -54,7 +65,7 @@ export const MainPage = () =>{
             <form onSubmit={handleAddProduct}>
                 Podaj nazwe Produktu
                 <label>
-                    <input onChange={handleNameChange} type={"text"}/>
+                    <input value={productName} onChange={handleNameChange}  type={"text"}/>
                 </label>
                 <label>
                     Wybierz Kategorie
@@ -63,7 +74,7 @@ export const MainPage = () =>{
                     </select>
                 </label>
                 <label>
-                    <input max={100} min={0} type={"number"} onChange={handleQuantityChange} />
+                    <input value={productQuantity} max={100} min={1} type={"number"} onChange={handleQuantityChange} />
                 </label>
                 <label>
                     <input type="radio" name="quanity" checked={kilos} value={kilos} onChange={handleKilosChange} />KG
@@ -72,6 +83,12 @@ export const MainPage = () =>{
                 <input value={"submit"} type={"submit"}/>
 
             </form>
+            {warnings.length > 0 && <ul> {warnings.map( (err, index) => <li id={'warning'} key={index}>
+                <i className="fas fa-exclamation" />  {err}</li>)} </ul>}
+
+            <ul>Wszystkie
+                {listOfProducts.map((prod,index) => <li key={index}>{prod.name} {prod.quantity} {prod.category}</li>)}
+            </ul>
 
             </>
     )
