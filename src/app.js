@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './scss/main.scss';
+import {MainPage} from "./components/MainPage";
 
 const App = () =>{
-    return <h1>Hello Shop</h1>
+    return <MainPage/>
 }
 
 ReactDOM.render(
