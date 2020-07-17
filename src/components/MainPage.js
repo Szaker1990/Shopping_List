@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from "react";
 
 export const MainPage = () => {
-    const [product, setProduct] = useState({name: "", category: "", quantity: ""});
+    const [product, setProduct] = useState({id: 0,name: "", category: "", quantity: ""});
     const [categories, setCategories] = useState(["Pieczywo", "Owoce", "Warzywa", "Nabiał", "Kosmetyki"]);
     const [productName, setProductName] = useState("");
     const [productQuantity, setProductQuantity] = useState(1);
     const [kilos, setKilos] = useState(true);
     const [productCategory, setProductCategory] = useState(categories[0]);
     const [listOfProducts, setListOfProducts] = useState([]);
-    const [warnings, setWarnings] = useState([])
+    const [warnings, setWarnings] = useState([]);
+    const[updatedArray,setUpdatedArray] = useState([]);
 
 
     const handleNameChange = (e) => {
@@ -18,15 +19,16 @@ export const MainPage = () => {
         setProductCategory(e.target.value);
     }
     const handleKilosChange = () => {
-        setKilos(!kilos)
+        setKilos(!kilos);
     }
     const handleQuantityChange = (e) => {
-        setProductQuantity(e.target.value)
+        setProductQuantity(e.target.value);
     }
 
     const addProduct = () => {
 
         let newProduct = {
+            id: listOfProducts.length+1,
             name: productName,
             category: productCategory,
             quantity: kilos ? `${productQuantity} Kg` : `${productQuantity} sztuk`
@@ -34,31 +36,39 @@ export const MainPage = () => {
         }
 
 
-        setProduct(newProduct)
+        setProduct(newProduct);
     }
     useEffect(() => {
-        addProduct()
-    }, [productName, productCategory, kilos, productQuantity])
+        addProduct();
+    }, [productName, productCategory, kilos, productQuantity]);
 
     const handleAddProduct = (e) => {
-        e.preventDefault()
+        e.preventDefault();
         const newErrors = [];
         if (product.name.length < 1) {
             newErrors.push("Nazwa Produktu musi zawierac wiecej niz 1 znak")
         }
-        setWarnings(newErrors)
+        setWarnings(newErrors);
         if (newErrors.length > 0) return false
-        setListOfProducts([...listOfProducts, product])
-        resetProduct()
+        setListOfProducts([...listOfProducts, product]);
+        resetProduct();
 
     }
 
 
     const resetProduct = () => {
-        setProductName("")
-        setProductQuantity(1)
+        setProductName("");
+        setProductQuantity(1);
 
     }
+    const handleRemoveItem = (id) => {
+        setListOfProducts(listOfProducts.filter((product)=> product.id !== id))
+
+    }
+    // useEffect(() =>{
+    //     handleRemoveItem()
+    // },[listOfProducts])
+
 
 
     return (
@@ -88,10 +98,15 @@ export const MainPage = () => {
             {warnings.length > 0 && <ul> {warnings.map((err, index) => <li id={'warning'} key={index}>
                 <i className="fas fa-exclamation"/> {err}</li>)} </ul>}
             <ul>Wszystkie
-                {listOfProducts.map((prod, index) => <li key={index}>{prod.name} {prod.quantity} {prod.category}</li>)}
+                {listOfProducts.map((prod, index) =>
+                    <li key={index}>{prod.name} {prod.quantity} {prod.category}
+                <button onClick={() => handleRemoveItem(prod.id)}>Remove</button>
+                    </li>)}
             </ul>
-            {categories.map((cat) =><ul key={cat}>{cat} {listOfProducts.filter(prod => prod.category === cat).map(filteredProducts => (
-                <li>{filteredProducts.name}</li>))}</ul>)}
+            {categories.map((cat) =><ul key={cat}>{cat} {listOfProducts.filter(prod => prod.category === cat).map(
+                filteredProducts => (
+                <li key={filteredProducts.id} >{filteredProducts.name} {filteredProducts.quantity}
+                <button onClick={() => handleRemoveItem(filteredProducts.id)}>Remove</button> </li>))}</ul>)}
 
         </>
     )
