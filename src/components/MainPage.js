@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-
+const shoppingList = []
 export const MainPage = () => {
     const [product, setProduct] = useState({id: 0,name: "", category: "", quantity: ""});
     const [categories, setCategories] = useState(["Pieczywo", "Owoce", "Warzywa", "Nabiał", "Kosmetyki"]);
@@ -9,7 +9,7 @@ export const MainPage = () => {
     const [productCategory, setProductCategory] = useState(categories[0]);
     const [listOfProducts, setListOfProducts] = useState([]);
     const [warnings, setWarnings] = useState([]);
-    const[updatedArray,setUpdatedArray] = useState([]);
+    const [updatedArray,setUpdatedArray] = useState([]);
 
 
     const handleNameChange = (e) => {
@@ -65,10 +65,17 @@ export const MainPage = () => {
         setListOfProducts(listOfProducts.filter((product)=> product.id !== id))
 
     }
-    // useEffect(() =>{
-    //     handleRemoveItem()
-    // },[listOfProducts])
 
+    const save = () => {
+        window.localStorage.clear()
+
+        const list = listOfProducts
+        localStorage.setItem("list", JSON.stringify(list));
+
+        // shoppingList.push(...list);
+        // localStorage.setItem("shoppingList", JSON.stringify(shoppingList));
+
+    }
 
 
     return (
@@ -107,6 +114,7 @@ export const MainPage = () => {
                 filteredProducts => (
                 <li key={filteredProducts.id} >{filteredProducts.name} {filteredProducts.quantity}
                 <button onClick={() => handleRemoveItem(filteredProducts.id)}>Remove</button> </li>))}</ul>)}
+                <button onClick={save}>save</button>
 
         </>
     )
