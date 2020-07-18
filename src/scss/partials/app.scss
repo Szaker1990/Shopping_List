@@ -1,22 +1,18 @@
-
 *{
   font-family: $main-font;
 }
-
 .product__list{
   font-size: 1.5em;
-
   .product__item{
     font-size: 0.8em;
-    padding-left: 20px;
-
+    min-height: 120px;
+    margin: 0 2px;
+    padding: 10px;
   }
 }
-
 .blank{
   list-style: none;
 }
-
 .input__style{
   font-size: 1.2em;
   margin: 7px;
