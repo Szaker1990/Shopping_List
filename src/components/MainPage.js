@@ -75,10 +75,15 @@ export const MainPage = () => {
     }
     //Saving to Local Storage/////
     const save = () => {
-        window.localStorage.clear()
+        // window.localStorage.clear()
         const list = listOfProducts
-        if(list.length<= 0) return alert("Nie możesz zapisać pustej listy")
-        localStorage.setItem("list", JSON.stringify(list));
+        if(list.length<= 0) {
+            return alert("nie mozesz dodac pustej listy")
+        }else{
+            window.localStorage.clear()
+            localStorage.setItem("list", JSON.stringify(list));
+        }
+
 
     }
 
@@ -94,10 +99,13 @@ export const MainPage = () => {
     return (
         <>
             <nav className="navbar navbar-light bg-light">
-                <a className="navbar-brand" href="#">Aplikacja Zakupowa</a>
-                <div className={"d-flex p-2"}>
+                <h2 >Aplikacja Zakupowa</h2>
+                <button className={"btn btn-info m-1"} onClick={load} data-toggle="tooltip" data-placement="bottom"
+                        title="Wczytaj Liste Zakupów">Wczytaj Liste
+                </button>
+                <div className={"d-flex p-3"}>
                     <h6>{`Ilosc Produktów na Liscie ${amount}`}</h6>
-                    <i className="fas fa-shopping-cart"></i>
+                    <i className="fas fa-shopping-cart ml-3"></i>
                 </div>
             </nav>
             <form className={"container"} onSubmit={handleAddProduct}>
@@ -135,14 +143,13 @@ export const MainPage = () => {
                 filteredProducts => (
                 <li className={"list-group-item product__item"} key={filteredProducts.id} >{filteredProducts.name} {filteredProducts.quantity}
                     <button className={"btn btn-danger"} onClick={() => handleRemoveItem(filteredProducts.id)}>
-                        <i className="fas fa-backspace"></i>
+                        <i className="far fa-trash-alt"></i>
                     </button></li>))}</ul>)}</div>
-                <button className={"btn btn-success"}  onClick={save} data-toggle="tooltip" data-placement="bottom"
-                        title="Zapisz Liste">Zapisz Liste
+            <div className={"row container p-3"}>
+                <button className={"btn btn-success m-1"}  onClick={save} data-toggle="tooltip" data-placement="bottom"
+                        title="Mozesz zapisac tylko jedna liste">Zapisz Liste
                 </button>
-                <button className={"btn btn-info"} onClick={load} data-toggle="tooltip" data-placement="bottom"
-                        title="Wczytaj Liste">Wczytaj Liste
-                </button>
+            </div>
 
 
         </>
