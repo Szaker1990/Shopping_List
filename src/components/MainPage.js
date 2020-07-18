@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 const shoppingList = []
 export const MainPage = () => {
     const [product, setProduct] = useState({id: 0,name: "", category: "", quantity: ""});
-    const [categories, setCategories] = useState(["Pieczywo", "Owoce", "Warzywa", "Nabiał", "Kosmetyki","Napoje"]);
+    const [categories, setCategories] = useState(["Pieczywo", "Owoce", "Warzywa", "Nabiał", "Kosmetyki","Napoje","Słodycze","Art.Biurowe"]);
     const [productName, setProductName] = useState("");
     const [productQuantity, setProductQuantity] = useState(1);
     const [kilos, setKilos] = useState(true);
@@ -108,30 +108,30 @@ export const MainPage = () => {
                     <i className="fas fa-shopping-cart ml-3"></i>
                 </div>
             </nav>
-            <form className={"container"} onSubmit={handleAddProduct}>
-                Podaj Nazwe Produktu
+            <form className={" container form__wrapper"} onSubmit={handleAddProduct}>
+                <span className={"input__style"}>Podaj Nazwe Produktu</span>
                 <label>
                     <input className={"form-control"} value={productName} onChange={handleNameChange} type={"text"}/>
                 </label>
-                Wybierz Kategorie:
+                <span className={"input__style"}>Wybierz Kategorie:</span>
                 <label>
                     <select className={"form-control"} onChange={handleCategoryChange}>
                         {categories.map((element) => <option value={element} key={element}>{element}</option>)}
                     </select>
                 </label>
-                Ilość
+                <span className={"input__style"}>Ilość</span>
                 <label>
                     <input className={"form-control"} value={productQuantity} max={100} min={1} type={"number"} onChange={handleQuantityChange}/>
                 </label>
                 <label>
-                    <input type="radio" name="quanity" checked={kilos} value={kilos} onChange={handleKilosChange}/>KG
-                    <input type="radio" name="quanity" onChange={handleKilosChange}/>Sztuk
+                    <input type="radio" name="quanity" checked={kilos} value={kilos} onChange={handleKilosChange}/><span className={"input__style"}>Kg</span>
+                    <input type="radio" name="quanity" onChange={handleKilosChange}/><span className={"input__style"}>Sztuk</span>
                 </label>
                 <input className={"btn btn-primary"} value={"Dodaj Produkt"} type={"submit"} data-toggle="tooltip" data-placement="bottom" title="Dodaj Produkt"/>
 
             </form>
-            {warnings.length > 0 && <ul> {warnings.map((err, index) => <li className={"alert alert-danger"} id={'warning'} key={index}>
-                <i className="fas fa-exclamation"/> {err}</li>)} </ul>}
+            {warnings.length > 0 && <ul className={"blank"}> {warnings.map((err, index) => <li className={"alert alert-danger"} id={'warning'} key={index}>
+                <i className="fas fa-exclamation mr-2"/> {err}</li>)} </ul>}
             {/*<ul>Wszystkie*/}
             {/*    {listOfProducts.map((prod, index) =>*/}
             {/*        <li key={index}>{prod.name} {prod.quantity} {prod.category}*/}
