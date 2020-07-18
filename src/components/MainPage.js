@@ -10,6 +10,7 @@ export const MainPage = () => {
     const [listOfProducts, setListOfProducts] = useState([]);
     const [warnings, setWarnings] = useState([]);
     const [updatedArray,setUpdatedArray] = useState([]);
+    const [amount, setAmount] = useState(0)
 
     //////////Function that handle inputs value///////
 
@@ -49,12 +50,13 @@ export const MainPage = () => {
     const handleAddProduct = (e) => {
         e.preventDefault();
         const newErrors = [];
-        if (product.name.length < 1) {
-            newErrors.push("Nazwa Produktu musi zawierac wiecej niz 1 znak")
+        if (product.name.length < 1 || product.name.length > 20) {
+            newErrors.push("Nazwa Produktu musi zawierac wiecej niz 1 znak i mniej niz 20")
         }
         setWarnings(newErrors);
         if (newErrors.length > 0) return false
         setListOfProducts([...listOfProducts, product]);
+        setAmount(listOfProducts.length + 1)
         resetProduct();
 
     }
@@ -68,6 +70,7 @@ export const MainPage = () => {
     ///////Delete List Object////
     const handleRemoveItem = (id) => {
         setListOfProducts(listOfProducts.filter((product)=> product.id !== id))
+        setAmount(prev => prev -1)
 
     }
     //Saving to Local Storage/////
@@ -79,29 +82,44 @@ export const MainPage = () => {
 
     }
 
+    const load = () =>{
+        let result = JSON.parse(localStorage.getItem('list'))
+        if(result === null) return alert("Brak listy do wczytania")
+        setListOfProducts(result)
+        setAmount(result.length)
+    }
+
+
 
     return (
         <>
-            <h1>Witaj w Aplikacji Zakupowej</h1>
-            <form className={"d-flex justify-content-center form-group container"} onSubmit={handleAddProduct}>
+            <nav className="navbar navbar-light bg-light">
+                <a className="navbar-brand" href="#">Aplikacja Zakupowa</a>
+                <div className={"d-flex p-2"}>
+                    <h6>{`Ilosc Produktów na Liscie ${amount}`}</h6>
+                    <i className="fas fa-shopping-cart"></i>
+                </div>
+            </nav>
+            <form className={"container"} onSubmit={handleAddProduct}>
                 Podaj Nazwe Produktu
                 <label>
-                    <input value={productName} onChange={handleNameChange} type={"text"}/>
+                    <input className={"form-control"} value={productName} onChange={handleNameChange} type={"text"}/>
                 </label>
+                Wybierz Kategorie:
                 <label>
-                    Wybierz Kategorie:
-                    <select onChange={handleCategoryChange}>
+                    <select className={"form-control"} onChange={handleCategoryChange}>
                         {categories.map((element) => <option value={element} key={element}>{element}</option>)}
                     </select>
                 </label>
+                Ilość
                 <label>
-                    <input value={productQuantity} max={100} min={1} type={"number"} onChange={handleQuantityChange}/>
+                    <input className={"form-control"} value={productQuantity} max={100} min={1} type={"number"} onChange={handleQuantityChange}/>
                 </label>
                 <label>
                     <input type="radio" name="quanity" checked={kilos} value={kilos} onChange={handleKilosChange}/>KG
                     <input type="radio" name="quanity" onChange={handleKilosChange}/>Sztuk
                 </label>
-                <input className={"btn btn-primary"} value={"Dodaj Produkt"} type={"submit"}/>
+                <input className={"btn btn-primary"} value={"Dodaj Produkt"} type={"submit"} data-toggle="tooltip" data-placement="bottom" title="Dodaj Produkt"/>
 
             </form>
             {warnings.length > 0 && <ul> {warnings.map((err, index) => <li className={"alert alert-danger"} id={'warning'} key={index}>
@@ -112,11 +130,20 @@ export const MainPage = () => {
             {/*    <button onClick={() => handleRemoveItem(prod.id)}>Remove</button>*/}
             {/*        </li>)}*/}
             {/*</ul>*/}
-            {categories.map((cat) =><ul className={"list-group"} key={cat}>{cat} {listOfProducts.filter(prod => prod.category === cat).map(
+
+            <div className={"d-flex flex-row"}>{categories.map((cat) =><ul className={"list-group p-5 product__list"} key={cat}>{cat} {listOfProducts.filter(prod => prod.category === cat).map(
                 filteredProducts => (
-                <li className={"list-group-item"} key={filteredProducts.id} >{filteredProducts.name} {filteredProducts.quantity}
-                <button className={"btn btn-danger"} onClick={() => handleRemoveItem(filteredProducts.id)}><i className="fas fa-backspace"></i></button> </li>))}</ul>)}
-                <button className={"btn btn-success"} onClick={save}>Zapisz Liste</button>
+                <li className={"list-group-item product__item"} key={filteredProducts.id} >{filteredProducts.name} {filteredProducts.quantity}
+                    <button className={"btn btn-danger"} onClick={() => handleRemoveItem(filteredProducts.id)}>
+                        <i className="fas fa-backspace"></i>
+                    </button></li>))}</ul>)}</div>
+                <button className={"btn btn-success"}  onClick={save} data-toggle="tooltip" data-placement="bottom"
+                        title="Zapisz Liste">Zapisz Liste
+                </button>
+                <button className={"btn btn-info"} onClick={load} data-toggle="tooltip" data-placement="bottom"
+                        title="Wczytaj Liste">Wczytaj Liste
+                </button>
+
 
         </>
     )
