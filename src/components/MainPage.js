@@ -106,7 +106,7 @@ export const MainPage = () => {
 
 
     return (
-        <>
+        <>{/*Header*/}
             <nav className="navbar navbar-light bg-light shadow mb-3">
                 <h2>Aplikacja Zakupowa</h2>
                 <div className={"d-flex p-3"}>
@@ -114,12 +114,14 @@ export const MainPage = () => {
                     <i className="fas fa-shopping-cart ml-3"/>
                 </div>
             </nav>
+            {/*Form to handle the inputs*/}
             <form className={" container form__wrapper justify-content-around"} onSubmit={handleAddProduct}>
                 <span className={"input__style"}>Podaj Nazwe Produktu</span>
                 <label>
                     <input className={"form-control"} value={productName} onChange={handleNameChange} type={"text"}/>
                 </label>
                 <span className={"input__style"}>Wybierz Kategorie:</span>
+                {/*Creating option for each category*/}
                 <label>
                     <select className={"form-control"} onChange={handleCategoryChange}>
                         {categories.map((element) => <option value={element} key={element}>{element}</option>)}
@@ -131,10 +133,10 @@ export const MainPage = () => {
                            onChange={handleQuantityChange}/>
                 </label>
                 <label>
-                    <input type="radio" name="quanity" checked={kilos} value={kilos} onChange={handleKilosChange}/><span
-                    className={"input__style"}>Kg</span>
-                    <input type="radio" name="quanity" onChange={handleKilosChange}/><span
-                    className={"input__style"}>Szt.</span>
+                    <input type="radio" name="quanity" checked={kilos} value={kilos} onChange={handleKilosChange}/>
+                    <span className={"input__style"}>Kg</span>
+                    <input type="radio" name="quanity" onChange={handleKilosChange}/>
+                    <span className={"input__style"}>Szt.</span>
                 </label>
                 <input className={"btn btn-primary align-self-center"} value={"Dodaj Produkt"}
                        type={"submit"} data-toggle="tooltip" data-placement="bottom" title="Dodaj Produkt"/>
@@ -161,10 +163,12 @@ export const MainPage = () => {
             </div>
             <div className={"container d-flex justify-content-end  p-3"}>
                 <button className={"btn btn-success col-6 col-md-2 m-1"} onClick={save} data-toggle="tooltip"
-                        data-placement="bottom" title="Mozesz zapisac tylko jedna liste">Zapisz Liste
+                        data-placement="bottom" title="Mozesz zapisac tylko jedna liste">
+                    Zapisz Liste
                 </button>
                 <button className={"btn btn-info col-6 col-md-2 m-1"} onClick={load} data-toggle="tooltip"
-                        data-placement="bottom" title="Wczytaj Liste Zakupów">Wczytaj Liste
+                        data-placement="bottom" title="Wczytaj Liste Zakupów">
+                    Wczytaj Liste
                 </button>
             </div>
         </>
