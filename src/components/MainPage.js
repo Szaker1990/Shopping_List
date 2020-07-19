@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
+
 export const MainPage = () => {
-    const [product, setProduct] = useState({id: 0,name: "", category: "", quantity: ""});
-    const [categories, setCategories] = useState(["Pieczywo", "Owoce", "Warzywa", "Nabiał", "Kosmetyki","Napoje","Słodycze","Art.Biurowe"]);
+    const [product, setProduct] = useState({id: 0, name: "", category: "", quantity: ""});
+    const [categories, setCategories] = useState(["Pieczywo", "Owoce", "Warzywa", "Nabiał", "Kosmetyki", "Napoje", "Słodycze", "Art.Biurowe"]);
     const [productName, setProductName] = useState("");
     const [productQuantity, setProductQuantity] = useState(1);
     const [kilos, setKilos] = useState(true);
@@ -28,11 +29,11 @@ export const MainPage = () => {
 
     //// getting id for new product////////
     const maxIdNumber = () => {
-        setMaxId( Math.max(product.id) + 1)
+        setMaxId(Math.max(product.id) + 1)
     }
 
     //////watching new product id//////
-    useEffect(() =>{
+    useEffect(() => {
         maxIdNumber()
     }, [amount])
     //////////Creating new product from inputs//////////////
@@ -78,17 +79,17 @@ export const MainPage = () => {
     }
     ///////Delete List Object////
     const handleRemoveItem = (id) => {
-        setListOfProducts(listOfProducts.filter((product)=> product.id !== id))
-        setAmount(prev => prev -1)
+        setListOfProducts(listOfProducts.filter((product) => product.id !== id))
+        setAmount(prev => prev - 1)
 
     }
     //Saving to Local Storage/////
     const save = () => {
         // window.localStorage.clear()
         const list = listOfProducts
-        if(list.length<= 0) {
+        if (list.length <= 0) {
             return alert("nie mozesz dodac pustej listy")
-        }else{
+        } else {
             window.localStorage.clear()
             localStorage.setItem("list", JSON.stringify(list));
         }
@@ -96,9 +97,9 @@ export const MainPage = () => {
     }
 
     ////load data from Local storage////
-    const load = () =>{
+    const load = () => {
         let result = JSON.parse(localStorage.getItem('list'))
-        if(result === null) return alert("Brak listy do wczytania")
+        if (result === null) return alert("Brak listy do wczytania")
         setListOfProducts(result)
         setAmount(result.length)
     }
@@ -107,7 +108,7 @@ export const MainPage = () => {
     return (
         <>
             <nav className="navbar navbar-light bg-light shadow mb-3">
-                <h2 >Aplikacja Zakupowa</h2>
+                <h2>Aplikacja Zakupowa</h2>
                 <div className={"d-flex p-3"}>
                     <h6>{`Ilosc Produktów na Liscie ${amount}`}</h6>
                     <i className="fas fa-shopping-cart ml-3"/>
@@ -126,28 +127,44 @@ export const MainPage = () => {
                 </label>
                 <span className={"input__style"}>Ilość</span>
                 <label>
-                    <input className={"form-control"} value={productQuantity} max={100} min={1} type={"number"} onChange={handleQuantityChange}/>
+                    <input className={"form-control"} value={productQuantity} max={100} min={1} type={"number"}
+                           onChange={handleQuantityChange}/>
                 </label>
                 <label>
-                    <input type="radio" name="quanity" checked={kilos} value={kilos} onChange={handleKilosChange}/><span className={"input__style"}>Kg</span>
-                    <input type="radio" name="quanity" onChange={handleKilosChange}/><span className={"input__style"}>Szt.</span>
+                    <input type="radio" name="quanity" checked={kilos} value={kilos} onChange={handleKilosChange}/><span
+                    className={"input__style"}>Kg</span>
+                    <input type="radio" name="quanity" onChange={handleKilosChange}/><span
+                    className={"input__style"}>Szt.</span>
                 </label>
-                <input className={"btn btn-primary align-self-center"} value={"Dodaj Produkt"} type={"submit"} data-toggle="tooltip" data-placement="bottom" title="Dodaj Produkt"/>
+                <input className={"btn btn-primary align-self-center"} value={"Dodaj Produkt"}
+                       type={"submit"} data-toggle="tooltip" data-placement="bottom" title="Dodaj Produkt"/>
             </form>
-            {warnings.length > 0 && <ul className={"blank"}> {warnings.map((err, index) => <li className={"alert alert-danger"} id={'warning'} key={index}>
-                <i className="fas fa-exclamation mr-2"/> {err}</li>)} </ul>}
-            <div className={"d-flex flex-column flex-md-row text-center col-12  container"}>{categories.map((cat) =><ul className={"list-group w-100 product__list"} key={cat}>{cat} {listOfProducts.filter(prod => prod.category === cat).map(
-                filteredProducts => (
-                    <li className={"list-group-item d-flex flex-column justify-content-between product__item"} key={filteredProducts.id} >{filteredProducts.name} <br/>{filteredProducts.quantity}
-                        <button className={"btn btn-danger"} onClick={() => handleRemoveItem(filteredProducts.id)}>
-                            <i className="far fa-trash-alt" />
-                        </button></li>))}</ul>)}</div>
+            {/*Creating list of errors*/}
+            {warnings.length > 0 && <ul className={"blank"}> {warnings.map((err, index) =>
+                <li className={"alert alert-danger"} id={'warning'} key={index}>
+                    <i className="fas fa-exclamation mr-2"/> {err}
+                </li>)}
+            </ul>}
+            {/*Logic of creating a list for each category and sort items to correct category*/}
+            <div className={"d-flex flex-column flex-md-row text-center col-12  container"}>{categories.map((cat) =>
+                <ul className={"list-group w-100 product__list"}
+                    key={cat}>{cat} {listOfProducts.filter(prod => prod.category === cat).map(
+                    filteredProducts => (
+                        <li className={"list-group-item d-flex flex-column justify-content-between product__item"}
+                            key={filteredProducts.id}>{filteredProducts.name} <br/>{filteredProducts.quantity}
+                            <button className={"btn btn-danger"} onClick={() => handleRemoveItem(filteredProducts.id)}
+                                    data-toggle="tooltip" data-placement="bottom" title="Usun Produkt z listy">>
+                                <i className="far fa-trash-alt"/>
+                            </button>
+                        </li>))}
+                </ul>)}
+            </div>
             <div className={"container d-flex justify-content-end  p-3"}>
-                <button className={"btn btn-success col-6 col-md-2 m-1"}  onClick={save} data-toggle="tooltip" data-placement="bottom"
-                        title="Mozesz zapisac tylko jedna liste">Zapisz Liste
+                <button className={"btn btn-success col-6 col-md-2 m-1"} onClick={save} data-toggle="tooltip"
+                        data-placement="bottom" title="Mozesz zapisac tylko jedna liste">Zapisz Liste
                 </button>
-                <button className={"btn btn-info col-6 col-md-2 m-1"} onClick={load} data-toggle="tooltip" data-placement="bottom"
-                        title="Wczytaj Liste Zakupów">Wczytaj Liste
+                <button className={"btn btn-info col-6 col-md-2 m-1"} onClick={load} data-toggle="tooltip"
+                        data-placement="bottom" title="Wczytaj Liste Zakupów">Wczytaj Liste
                 </button>
             </div>
         </>
