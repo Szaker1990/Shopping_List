@@ -38,23 +38,19 @@ export const MainPage = () => {
     }, [amount])
     //////////Creating new product from inputs//////////////
     const addProduct = () => {
-
         let newProduct = {
             id: maxId,
             name: productName.trim(),
             category: productCategory,
             quantity: kilos ? `${productQuantity} Kg` : `${productQuantity} Szt.`
-
         }
 
         setProduct(newProduct);
     }
-
     ///////Watching changes on data////////////
     useEffect(() => {
         addProduct();
     }, [productName, productCategory, kilos, productQuantity]);
-
 
     ////////////Adding product to the list//////////
     const handleAddProduct = (e) => {
@@ -64,13 +60,12 @@ export const MainPage = () => {
             newErrors.push("Nazwa Produktu musi zawierać więcej niż 1 znak i mniej niz 16")
         }
         setWarnings(newErrors);
-        if (newErrors.length > 0) return false
+        if (newErrors.length > 0) return false;
         setListOfProducts([...listOfProducts, product]);
-        setAmount(listOfProducts.length + 1)
+        setAmount(listOfProducts.length + 1);
         resetProduct();
 
     }
-
     /////Reset Inputs///////
     const resetProduct = () => {
         setProductName("");
@@ -79,9 +74,8 @@ export const MainPage = () => {
     }
     ///////Delete List Object////
     const handleRemoveItem = (id) => {
-        setListOfProducts(listOfProducts.filter((product) => product.id !== id))
-        setAmount(prev => prev - 1)
-
+        setListOfProducts(listOfProducts.filter((product) => product.id !== id));
+        setAmount(prev => prev - 1);
     }
     //Saving to Local Storage/////
     const save = () => {
@@ -93,9 +87,7 @@ export const MainPage = () => {
             window.localStorage.clear()
             localStorage.setItem("list", JSON.stringify(list));
         }
-
     }
-
     ////load data from Local storage////
     const load = () => {
         let result = JSON.parse(localStorage.getItem('list'))
@@ -103,8 +95,6 @@ export const MainPage = () => {
         setListOfProducts(result)
         setAmount(result.length)
     }
-
-
     return (
         <>{/*Header*/}
             <nav className="navbar navbar-light bg-light shadow mb-3">
