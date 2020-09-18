@@ -1,4 +1,6 @@
-# Shopping List App
+# Recruitment Task
+
+## Shopping List App
 
 Simple App using React and Local Storage to create and keep shop list .
 
@@ -12,7 +14,7 @@ npm start
 
 ## Technologies
 
-```py
+```
 HTML
 CSS3
 SASS
@@ -24,4 +26,4 @@ Javascript
 
 
 ## License
-Feel free to use this app and code 
+Feel free to use this app.
